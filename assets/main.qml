@@ -3,6 +3,44 @@ import "mainPageDb.js" as DbConnection
 
 NavigationPane {
     id: pageStack
+    // Add the application menu using a MenuDefinition
+        Menu.definition: MenuDefinition {
+
+            // Specify the actions that should be included in the menu
+            actions: [
+	            ActionItem {
+	                title: qsTr("Settings")
+	                onTriggered: {
+	                    var page = settingsPageLoader.createObject();
+	                    pageStack.push(page);
+	                }
+	                 
+	                attachedObjects: ComponentDefinition {
+	                    id: settingsPageLoader;
+	                    source: "ِSettingsPage.qml"
+	                }
+	            },
+                ActionItem {
+                    title: qsTr("Synchronise")
+                    onTriggered: {
+                        syncDialogLoader.sourceComponent = syncDialogComponent
+                        syncDialogLoader.item.open();
+                    }
+                },
+                ActionItem {
+                    title: qsTr("About")
+                    onTriggered: {
+                        var page = aboutPageLoader.createObject();
+                        pageStack.push(page);
+                    }
+                     
+                    attachedObjects: ComponentDefinition {
+                        id: aboutPageLoader;
+                        source: "AboutPage.qml"
+                    }
+                }
+            ] // end of actions list
+        } // end of MenuDefinition
     Page {
         id: mainPage
         //orientationLock: DbConnection.getOrientationLock()
@@ -20,16 +58,8 @@ NavigationPane {
         property int modelIndex: -1
         property int scrollTo: 0
         /*Loader {
-            id: aboutPageLoader
-            onLoaded: console.log("About page loaded")
-        }
-        Loader {
             id: listsPageLoader
             onLoaded: console.log("Lists page loaded")
-        }
-        Loader {
-            id: settingsPageLoader
-            onLoaded: console.log("Settings page loaded")
         }
         Loader {
             id: editPageLoader
@@ -42,30 +72,10 @@ NavigationPane {
                     listsPageLoader.source = "ListsPage.qml";
                     listsPageLoader.item.orientationLock = orientationLock;
                     mainPage.orientationLock = orientationLock;
-                    aboutPageLoader.source = "AboutPage.qml";
-                    aboutPageLoader.item.orientationLock = orientationLock;
                 }
             }        
         ]
         
-        Component {
-            id: settingsPageComponent
-            SettingsPage {
-                id: settingsPage
-                onAboutView: {
-                    aboutPageLoader.source = "AboutPage.qml";
-                    pageStack.push(aboutPageLoader.item);
-                }
-                onThemeChanged: {
-                    mainPage.loadTheme();
-                    //settingsPage.loadTheme();
-                    //listsPageLoader.source = "ListsPage.qml";
-                    //listsPageLoader.item.loadTheme();
-                    //aboutPageLoader.source = "AboutPage.qml";
-                    //aboutPageLoader.item.loadTheme();
-                }
-            }
-        }
         onStatusChanged: {
             if (status == PageStatus.Deactivating) {
                 //console.log("+++ MainPage::onStatusChanged .Deactivating");
@@ -75,45 +85,29 @@ NavigationPane {
         
         actions: [
             ActionItem {
-                title: qsTr("New")
-                onTriggered: {
-                    editPageLoader.sourceComponent = editPageComponent;
-                    editPageLoader.item.open();
-                }
+                title: qsTr("Add")
                 ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    var page = editPageLoader.createObject();
+                    pageStack.push(page);
+                }
+                 
+                attachedObjects: {
+                    id: editPageLoader;
+                    source: "ِEditPage.qml"
+                }
             },
             ActionItem {
                 title: qsTr("All Notes")
-                onTriggered: {
-                    listsPageLoader.source = "ListsPage.qml";
-                    pageStack.push(listsPageLoader.item);
-                }
                 ActionBar.placement: ActionBarPlacement.OnBar
-            },
-            ActionItem {
-                title: qsTr("Synchronise")
                 onTriggered: {
-                    syncDialogLoader.sourceComponent = syncDialogComponent
-                    syncDialogLoader.item.open();
-                }
-            },
-            ActionItem {
-                title: qsTr("Settings")
-                onTriggered: {
-                    settingsPageLoader.sourceComponent = settingsPageComponent;
-                    pageStack.push(settingsPageLoader.item);
-                }
-            },
-            ActionItem {
-                title: qsTr("About")
-                onTriggered: {
-                    var page = aboutPageLoader.createObject();
+                    var page = listPageLoader.createObject();
                     pageStack.push(page);
                 }
                  
                 attachedObjects: ComponentDefinition {
-                    id: aboutPageLoader;
-                    source: "AboutPage.qml"
+                    id: listPageLoader;
+                    source: "ِListsPage.qml"
                 }
             }
         ]
@@ -256,20 +250,25 @@ NavigationPane {
                     }
                 }
             }*/
-        }/*
-        ContextMenu {
-            id: contextMenu
-            MenuLayout {
-                MenuItem {
-                    text: qsTr("Remove")
-                    onClicked: {
-                        DbConnection.removeRecord(mainPage.index);
-                        mainPage.reloadDb();
-                        listView.contentY = scrollTo;
-                    }
-                }
-            }
         }
+        /*contextActions: [
+            ActionSet {
+	            title: qsTr("Remove")
+	            subtitle: qsTr("Remove this item ?")
+	              
+	            actions: [
+	                ActionItem {
+	                    title: qsTr("Delete")
+	                    onTriggered: {
+	                        DbConnection.removeRecord(mainPage.index);
+	                        mainPage.reloadDb();
+	                        listView.contentY = scrollTo;
+	                    }   
+	                }
+	            ]
+	        }
+        ]*/
+        /*
         onVisibleChanged: {
             if (visible) {
                 reloadDb();
