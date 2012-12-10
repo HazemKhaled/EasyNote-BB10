@@ -46,12 +46,7 @@
 
     <!-- Description, displayed in the BlackBerry Tablet OS application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <description>EasyNote is a note typing tool. It&#x2019;s based upon EasyList but instead of lists you can create notes. The notes are
-
-- Displayed as text and each new line is seperated.
-- Hyperlinks are clickable and will open the URL in the webbrowser.
-- It&#x2019;s also possible to sync with an online note.
-- You Are able to switch themes.</description>
+    <description>EasyNote is a note typing tool. It&#x2019;s based upon EasyList but instead of lists you can create notes.</description>
 
     <!-- Copyright information. Optional. -->
     <!-- <copyright></copyright> -->
