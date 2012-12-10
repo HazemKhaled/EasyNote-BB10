@@ -46,7 +46,12 @@
 
     <!-- Description, displayed in the BlackBerry Tablet OS application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <description>The EasyNote application</description>
+    <description>EasyNote is a note typing tool. It&#x2019;s based upon EasyList but instead of lists you can create notes. The notes are
+
+- Displayed as text and each new line is seperated.
+- Hyperlinks are clickable and will open the URL in the webbrowser.
+- It&#x2019;s also possible to sync with an online note.
+- You Are able to switch themes.</description>
 
     <!-- Copyright information. Optional. -->
     <!-- <copyright></copyright> -->
@@ -59,8 +64,6 @@
     <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
    
     <initialWindow>
-        <aspectRatio>portrait</aspectRatio>
-        <autoOrients>false</autoOrients>
         <systemChrome>none</systemChrome>
         <transparent>false</transparent>
     </initialWindow>
@@ -87,6 +90,7 @@
     <!--  The icon for the application, which should be 86x86. -->
     <icon>
         <image>icon.png</image>
+        <image>icon-playbook.png</image>
     </icon>
 
     <asset path="icon.png">icon.png</asset>
@@ -96,6 +100,7 @@
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
+    <asset path="icon-playbook.png">icon-playbook.png</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
