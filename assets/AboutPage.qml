@@ -1,5 +1,4 @@
-import com.nokia.meego 1.0
-import QtQuick 1.1
+import bb.cascades 1.0
 import "settingsDb.js" as SettingsDb
 
 Page {
@@ -8,32 +7,17 @@ Page {
     property color headerBackgroundColor: SettingsDb.getValue("HEADER_BACKGROUND_COLOR")
     property color headerTextColor: SettingsDb.getValue("HEADER_TEXT_COLOR")
     property color textColor: SettingsDb.getValue("TEXT_COLOR")
-    orientationLock: SettingsDb.getOrientationLock();
+    //orientationLock: SettingsDb.getOrientationLock();
     property string version: "0.0.4";
 
-    Rectangle {
+    titleBar: TitleBar {
+        id: titleBar
+        title: qsTr("EasyNote - About")
+    }
+    /*Rectangle {
         id: background
         color: backgroundColor
         anchors.fill: parent
-
-        Rectangle {
-            id: header
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: 70
-            color: headerBackgroundColor
-            z: 10
-            Label {
-                id: title
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: 20
-                text: qsTr("EasyNote - About")
-                font.pixelSize: 32
-                color: headerTextColor
-            }
-        }
 
         onHeightChanged: {
             flick.height = height;
@@ -162,5 +146,5 @@ Page {
         headerBackgroundColor = SettingsDb.getValue("HEADER_BACKGROUND_COLOR");
         headerTextColor = SettingsDb.getValue("HEADER_TEXT_COLOR");
         textColor = SettingsDb.getValue("TEXT_COLOR");
-    }
+    }*/
 }

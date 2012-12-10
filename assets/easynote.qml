@@ -1,5 +1,4 @@
-import com.nokia.meego 1.0
-import QtQuick 1.0
+import bb.cascades 1.0
 
 PageStackWindow {
     id: pageStackWindow

@@ -1,5 +1,4 @@
-import com.nokia.meego 1.0
-import QtQuick 1.1
+import bb.cascades 1.0
 import "settingsDb.js" as SettingsDb
 
 Page {
@@ -30,28 +29,14 @@ Page {
         }
     }
 
+    titleBar: TitleBar {
+        id: titleBar
+        title: qsTr("EasyNote - Settings")
+    }
     Rectangle {
         id: background
         color: backgroundColor
         anchors.fill: parent
-        Rectangle {
-            id: header
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: 70
-            color: headerBackgroundColor
-            z: 10
-            Label {
-                id: title
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: 20
-                text: qsTr("EasyNote - Settings")
-                font.pixelSize: 32
-                color: headerTextColor
-            }
-        }
 
         onHeightChanged: {
             flick.height = height;
@@ -100,8 +85,8 @@ Page {
             id: flick
             anchors.top: header.bottom
             anchors.topMargin: 10
-            anchors.leftMargin: 10
-            anchors.rightMargin: 10
+            leftMargin: 10
+            rightMargin: 10
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -122,9 +107,9 @@ Page {
                     color: divisionLineColor
                     height: 1
                     anchors.verticalCenter: orientationLabel.verticalCenter
-                    anchors.leftMargin: 10
+                    leftMargin: 10
                     anchors.left: parent.left
-                    anchors.rightMargin: 5
+                    rightMargin: 5
                     anchors.right: orientationLabel.left
                 }
                 Label {
@@ -133,7 +118,7 @@ Page {
                     font.pointSize: 26
                     anchors.top: parent.top
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     color: divisionLineTextColor
                 }
 
@@ -141,10 +126,10 @@ Page {
                     id: orientationButtonRow
                     anchors.topMargin: 10;
                     anchors.top: orientationLabel.bottom
-                    anchors.leftMargin: 10;
+                    leftMargin: 10;
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     Button {
                         id: lockPortraitButton
                         text: qsTr("Portrait")
@@ -216,9 +201,9 @@ Page {
                     color: divisionLineColor
                     height: 1
                     anchors.verticalCenter: themeLabel.verticalCenter
-                    anchors.leftMargin: 10
+                    leftMargin: 10
                     anchors.left: parent.left
-                    anchors.rightMargin: 5
+                    rightMargin: 5
                     anchors.right: themeLabel.left
                 }
                 Label {
@@ -228,16 +213,16 @@ Page {
                     anchors.right: parent.right
                     anchors.top: orientationButtonRow.bottom
                     anchors.topMargin: 10;
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     color: divisionLineTextColor
                 }
 
                 Button {
                     id: themeButton
                     anchors.left: parent.left
-                    anchors.leftMargin: 10;
+                    leftMargin: 10;
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     anchors.top: themeLabel.bottom
                     anchors.topMargin: 10;
                     text: qsTr("Select Theme...")
@@ -251,9 +236,9 @@ Page {
                     color: divisionLineColor
                     height: 1
                     anchors.verticalCenter: syncLabel.verticalCenter
-                    anchors.leftMargin: 10
+                    leftMargin: 10
                     anchors.left: parent.left
-                    anchors.rightMargin: 5
+                    rightMargin: 5
                     anchors.right: syncLabel.left
                 }
                 Label {
@@ -263,7 +248,7 @@ Page {
                     anchors.right: parent.right
                     anchors.top: themeButton.bottom
                     anchors.topMargin: 10;
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     color: divisionLineTextColor
                 }
 
@@ -274,7 +259,7 @@ Page {
                     anchors.topMargin: 10
                     anchors.top: syncLabel.bottom
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    leftMargin: 10
                     color: textColor
                 }
                 TextField {
@@ -283,9 +268,9 @@ Page {
                     anchors.topMargin: 5
                     anchors.top: syncSourceLabel.bottom
                     anchors.left: parent.left
-                    anchors.leftMargin: 10;
+                    leftMargin: 10;
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     focus: true
                     inputMethodHints: Qt.ImhNoPredictiveText
                 }
@@ -297,7 +282,7 @@ Page {
                     anchors.topMargin: 10
                     anchors.top: syncSourceTextField.bottom
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    leftMargin: 10
                     color: textColor
                 }
                 TextField {
@@ -306,9 +291,9 @@ Page {
                     anchors.topMargin: 5
                     anchors.top: usernameLabel.bottom
                     anchors.left: parent.left
-                    anchors.leftMargin: 10;
+                    leftMargin: 10;
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     focus: true
                     inputMethodHints: Qt.ImhNoPredictiveText
                 }
@@ -320,7 +305,7 @@ Page {
                     anchors.topMargin: 10
                     anchors.top: syncUsernameTextField.bottom
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    leftMargin: 10
                     color: textColor
                 }
                 TextField {
@@ -329,9 +314,9 @@ Page {
                     anchors.topMargin: 10
                     anchors.top: passwordLabel.bottom
                     anchors.left: parent.left
-                    anchors.leftMargin: 10;
+                    leftMargin: 10;
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     focus: true
                     inputMethodHints: Qt.ImhNoPredictiveText
                 }
@@ -341,9 +326,9 @@ Page {
                     anchors.topMargin: 10
                     anchors.top: syncPasswordTextField.bottom
                     anchors.left: parent.left
-                    anchors.leftMargin: 10;
+                    leftMargin: 10;
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    rightMargin: 10
                     onClicked: {
                         settingsPage.save();
                     }

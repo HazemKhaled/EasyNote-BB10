@@ -1,5 +1,4 @@
-import com.nokia.meego 1.0
-import QtQuick 1.0
+import bb.cascades 1.0
 import "ezConsts.js" as Consts
 
 Item {
@@ -15,11 +14,14 @@ Item {
         Label {
             id: checkBoxText
             text: listName
-            color: Consts.getValue("LIST_ITEM_TEXT_COLOR");
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: 10
-            font.pixelSize: 26
+            leftMargin: 10
+            
+			textStyle {
+			        color: Consts.getValue("LIST_ITEM_TEXT_COLOR")
+			        fontSize : FontSize.Large
+			}
         }
 
         Rectangle {

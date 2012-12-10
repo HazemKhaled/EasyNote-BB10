@@ -16,29 +16,14 @@ Page {
     orientationLock: ListsDb.getOrientationLock();
     property string listName: ListsDb.getListName()
 
+    titleBar: TitleBar {
+        id: titleBar
+        title: qsTr("EasyNote - Notes")
+    }
     Rectangle {
         id: background
         color: backgroundColor
         anchors.fill: parent
-
-        Rectangle {
-            id: header
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: 70
-            color: headerBackgroundColor
-            z: 10
-            Label {
-                id: title
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: 20
-                text: qsTr("EasyNote - Notes")
-                font.pixelSize: 32
-                color: headerTextColor
-            }
-        }
 
         ListModel {
             id: listModel
@@ -49,8 +34,8 @@ Page {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            anchors.leftMargin: 10
-            anchors.rightMargin: 10
+            leftMargin: 10
+            rightMargin: 10
             model: ListsDb.getListsModel()
             delegate: itemComponent
             highlight: highlight
@@ -180,8 +165,8 @@ Page {
                     anchors.fill: parent
                     anchors.topMargin: 10
                     anchors.bottomMargin: 10
-                    anchors.leftMargin: 10
-                    anchors.rightMargin: 10
+                    leftMargin: 10
+                    rightMargin: 10
                     contentWidth: listNameRect.implicitWidth
                     contentHeight: listNameRect.implicitHeight
 
@@ -196,9 +181,11 @@ Page {
                             anchors.topMargin: 5
                             anchors.top: parent.top
                             anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            font.pixelSize: 24
-                            color: textColor
+                            leftMargin: 10
+                            textStyle {
+                                color: textColor
+                                fontSize : FontSize.Large
+                            }
                         }
                         TextField {
                             id: textField
@@ -206,7 +193,7 @@ Page {
                             anchors.top: newListLabel.bottom
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            anchors.rightMargin: 10
+                            rightMargin: 10
                             maximumLength: 20
                             inputMethodHints: Qt.ImhNoPredictiveText
                         }
@@ -251,8 +238,8 @@ Page {
                     anchors.fill: parent
                     anchors.topMargin: 10
                     anchors.bottomMargin: 10
-                    anchors.leftMargin: 10
-                    anchors.rightMargin: 10
+                    leftMargin: 10
+                    rightMargin: 10
                     contentWidth: renameListNameRect.implicitWidth
                     contentHeight: renameListNameRect.implicitHeight
 
@@ -267,9 +254,11 @@ Page {
                             anchors.topMargin: 5
                             anchors.top: parent.top
                             anchors.left: parent.left
-                            anchors.leftMargin: 10
-                            font.pixelSize: 24
-                            color: textColor
+                            leftMargin: 10
+                            textStyle {
+                                color: textColor
+                                fontSize : FontSize.Large
+                            }
                         }
                         TextField {
                             id: renameTextField
@@ -278,7 +267,7 @@ Page {
                             anchors.top: renameNewListLabel.bottom
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            anchors.rightMargin: 10
+                            rightMargin: 10
                             maximumLength: 20
                             inputMethodHints: Qt.ImhNoPredictiveText
                         }

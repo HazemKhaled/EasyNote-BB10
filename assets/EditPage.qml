@@ -1,5 +1,4 @@
-import com.nokia.meego 1.0
-import QtQuick 1.0
+import bb.cascades 1.0
 import "editPageDb.js" as EditDb
 
 Sheet {
@@ -33,8 +32,8 @@ Sheet {
             anchors.fill: parent
             anchors.topMargin: 10
             anchors.bottomMargin: 10
-            anchors.leftMargin: 10
-            anchors.rightMargin: 10
+            leftMargin: 10
+            rightMargin: 10
             contentHeight: textEdit.implicitHeight
             contentWidth: textEdit.implicitWidth
             //clip: true
