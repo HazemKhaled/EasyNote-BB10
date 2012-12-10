@@ -75,18 +75,20 @@ NavigationPane {
         
         actions: [
             ActionItem {
-                title: qsTr("Edit")
+                title: qsTr("New")
                 onTriggered: {
                     editPageLoader.sourceComponent = editPageComponent;
                     editPageLoader.item.open();
                 }
+                ActionBar.placement: ActionBarPlacement.OnBar
             },
             ActionItem {
-                title: qsTr("List")
+                title: qsTr("All Notes")
                 onTriggered: {
                     listsPageLoader.source = "ListsPage.qml";
                     pageStack.push(listsPageLoader.item);
                 }
+                ActionBar.placement: ActionBarPlacement.OnBar
             },
             ActionItem {
                 title: qsTr("Synchronise")
@@ -105,8 +107,13 @@ NavigationPane {
             ActionItem {
                 title: qsTr("About")
                 onTriggered: {
-                    aboutPageLoader.source = "AboutPage.qml";
-                    pageStack.push(aboutPageLoader.item);
+                    var page = aboutPageLoader.createObject();
+                    pageStack.push(page);
+                }
+                 
+                attachedObjects: ComponentDefinition {
+                    id: aboutPageLoader;
+                    source: "AboutPage.qml"
                 }
             }
         ]
@@ -146,29 +153,18 @@ NavigationPane {
                 message: qsTr("Unable to synchronize with online note. Please make sure you've correctly setup your sync account in settings.")
                 acceptButtonText: qsTr("Ok")
             }
+        }*/
+        
+        titleBar: TitleBar {
+            id: titleBar
+            title: "EasyNote - [" + mainPage.listName + "]"
         }
         Container {
             id: background
-            color: backgroundColor
-            anchors.fill: parent
-            Rectangle {
-                id: header
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: 70
-                color: headerBackgroundColor
-                z: 10
-                Label {
-                    id: title
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.leftMargin: 20
-                    text: "EasyNote - [" + mainPage.listName + "]"
-                    font.pixelSize: 32
-                    color: headerTextColor
-                }
-            }
+            background: backgroundColor
+            verticalAlignment: VerticalAlignment.Fill
+            horizontalAlignment: HorizontalAlignment.Fill
+            /*
             Component {
                 id: editPageComponent
                 EditPage {
@@ -193,14 +189,10 @@ NavigationPane {
             }
             ListView {
                 id: listView
-                anchors.top: header.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
-                model: DbConnection.loadDB(listName)
-                delegate: itemComponent
+	            verticalAlignment: VerticalAlignment.Center
+	            horizontalAlignment: HorizontalAlignment.Center
+                //model: DbConnection.loadDB(listName)
+                //delegate: itemComponent
             }
             ScrollDecorator {
                 flickableItem: listView
@@ -212,8 +204,8 @@ NavigationPane {
                     itemIndex: model.itemIndex
                     itemText: model.itemText
                     itemSelected: model.itemSelected
-                    height: Math.max(60, text.implicitHeight + 10)
-                    width: listView.width
+                    preferredHeight: Math.max(60, text.implicitHeight + 10)
+                    preferredWidth: listView.width
                     Rectangle {
                         id: backgroundRect
                         color: backgroundColor
@@ -221,14 +213,14 @@ NavigationPane {
                         Rectangle {
                             id: divisionLine
                             color: DbConnection.getValue("DIVISION_LINE_COLOR")
-                            height: 1
+                            preferredHeight: 1
                             anchors.bottom: parent.bottom
                             anchors.left: parent.left
                             anchors.right: parent.right
                         }
                         MouseArea {
-                            height: parent.height
-                            width: listView.width
+                            preferredHeight: parent.height
+                            preferredWidth: listView.width
                             onPressAndHold: {
                                 scrollTo = listView.contentY;
                                 mainPage.index = listItem.itemIndex;
@@ -248,21 +240,23 @@ NavigationPane {
                             Label {
                                 id: text
                                 anchors.verticalCenter: parent.verticalCenter
-                                width: listView.width
-                                anchors.leftMargin: 10
-                                font.pixelSize: 22
+                                preferredWidth: listView.width
+                                leftMargin: 10
+								textStyle {
+								        color: DbConnection.getValue("LIST_ITEM_TEXT_COLOR")
+								        fontSize : FontSize.Large
+								}
                                 text: itemText
                                 wrapMode: Text.Wrap
                                 onLinkActivated: {
                                     Qt.openUrlExternally(link);
                                 }
-                                color: DbConnection.getValue("LIST_ITEM_TEXT_COLOR")
                             }
                         }
                     }
                 }
-            }
-        }
+            }*/
+        }/*
         ContextMenu {
             id: contextMenu
             MenuLayout {
@@ -280,7 +274,7 @@ NavigationPane {
             if (visible) {
                 reloadDb();
             }
-        }
+        }*/
         function reloadDb() {
             listName = DbConnection.getListName();
             DbConnection.loadDB(listName);
@@ -381,6 +375,6 @@ NavigationPane {
         }
         function showRequestInfo(text) {
             console.log(text)
-        }*/
+        }
     }
 }
