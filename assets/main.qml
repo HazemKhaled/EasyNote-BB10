@@ -17,7 +17,7 @@ NavigationPane {
 	                 
 	                attachedObjects: ComponentDefinition {
 	                    id: settingsPageLoader;
-	                    source: "ِSettingsPage.qml"
+	                    source: "SettingsPage.qml"
 	                }
 	            },
                 ActionItem {
