@@ -87,36 +87,36 @@ NavigationPane {
         property int index: -1
         property int modelIndex: -1
         property int scrollTo: 0
-        /*Loader {
-            id: listsPageLoader
-            onLoaded: console.log("Lists page loaded")
-        }
-        Loader {
-            id: editPageLoader
-            onLoaded: console.log("Edit page loaded")
-        }
-        
-        attachedObjects: [
-            OrientationHandler {
-                onOrientationChanged: {
-                    listsPageLoader.source = "ListsPage.qml";
-                    listsPageLoader.item.orientationLock = orientationLock;
-                    mainPage.orientationLock = orientationLock;
-                }
-            }        
-        ]*/
+                         
+        attachedObjects: [ComponentDefinition {
+            id: listsPageLoader;
+            source: "ListsPage.qml"
+        },
+        Sheet {
+                id: editPageSheet
+                EditPage {
+                    id: editPage
+                    onCancel: {
+                        // Cancel modification so just hide the Sheet.
+                        editPageSheet.close();
+                    }
+                    onSave: {
+                        mainPage.reloadDb();
+                        editPageSheet.close();
+                    }
+                }
+        }]
         
         actions: [
             ActionItem {
                 title: qsTr("Add")
                 ActionBar.placement: ActionBarPlacement.OnBar
                 onTriggered: {
-                    var page = editPageLoader.createObject();
-                    pageStack.push(page);
+                    editPageSheet.open();
                 }
                  
-                attachedObjects: {
-                    id: editPageLoader;
+                attachedObjects: ComponentDefinition {
+                    id: editPageLoader
                     source: "ِEditPage.qml"
                 }
             },
@@ -144,27 +144,7 @@ NavigationPane {
             background: backgroundColor
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
-            /*
-            Component {
-                id: editPageComponent
-                EditPage {
-                    id: myEditPage
-                    visualParent: mainPage
-                    anchors.fill: parent
-                    z: 2
-                    onAccepted: {
-                        mainPage.reloadDb();
-                    }
-                    onVisibleChanged: {
-                        if (visible) {
-                            mainPage.hideToolbar(true);
-                        } else {
-                            mainPage.hideToolbar(false);
-                        }
-                    }
-                }
-            }
-            ListModel {
+            /*ListModel {
                 id: listModel
             }
             ListView {
@@ -254,26 +234,9 @@ NavigationPane {
 	            ]
 	        }
         ]*/
-        /*
-        onVisibleChanged: {
-            if (visible) {
-                reloadDb();
-            }
-        }*/
         function reloadDb() {
             listName = DbConnection.getListName();
             DbConnection.loadDB(listName);
-        }
-        function removeSelected() {
-            var num = listModel.count;
-            for (var i = num - 1; i >= 0; -- i) {
-                if (listModel.get(i).itemSelected == "true") {
-                    DbConnection.removeRecord(listModel.get(i).itemIndex);
-                }
-            }
-            DbConnection.populateModel();
-            updateButtonStatus();
-            listView.contentY = scrollTo;
         }
         function loadTheme() {
             DbConnection.loadTheme();
@@ -285,8 +248,8 @@ NavigationPane {
             textColor = DbConnection.getValue("TEXT_COLOR");
             listItemBackgroundColor = DbConnection.getValue("LIST_ITEM_BACKGROUND_COLOR");
             hoverColor = DbConnection.getValue("HOVER_COLOR");
-            editPageLoader.sourceComponent = editPageComponent;
-            editPageLoader.item.loadTheme();
+            //editPageLoader.sourceComponent = editPageComponent;
+            //editPageLoader.item.loadTheme();
         }
         function sync() {
             var syncUrl = DbConnection.getProperty(DbConnection.propSyncUrl);
@@ -346,16 +309,14 @@ NavigationPane {
                             }
                         }
                         if (synced === false) {
-                            unableToSyncDialogLoader.sourceComponent = unableToSyncDialogComponent;
-                            unableToSyncDialogLoader.item.open();
+                            unableToSyncDialog.show();
                         }
                     }
                 }
                 doc.open("GET", syncUrl + "?username=" + syncUsername + "&password=" + syncPassword + "&xml=v2");
                 doc.send();
             } else {
-                unableToSyncDialogLoader.sourceComponent = unableToSyncDialogComponent;
-                unableToSyncDialogLoader.item.open();
+                unableToSyncDialog.show();
             }
         }
         function showRequestInfo(text) {

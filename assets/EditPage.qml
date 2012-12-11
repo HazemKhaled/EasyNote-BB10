@@ -1,10 +1,33 @@
 import bb.cascades 1.0
 import "editPageDb.js" as EditDb
 
-Sheet {
+Page {
     id: editPage
     property string listName: "default"
     property color backgroundColor: EditDb.getValue("BACKGROUND_COLOR")
+    signal cancel()
+    signal save ()
+
+    titleBar: TitleBar {
+        id: addBar
+        title: qsTr("Add new Note")
+        visibility: ChromeVisibility.Visible
+        
+        dismissAction: ActionItem {
+            title: qsTr("Cancel")
+            onTriggered: {
+                editPage.cancel();
+            }
+        }
+                
+        acceptAction: ActionItem {
+            title: qsTr("Save")
+            onTriggered: {
+                editPage.save()
+            }
+        }
+    }
+    /*
     acceptButtonText: qsTr("Save")
     rejectButtonText: qsTr("Cancel")
     buttons: [
@@ -17,67 +40,39 @@ Sheet {
             }
         }
     ]
-
     onAccepted: {
         textEdit.platformCloseSoftwareInputPanel();
         EditDb.populateEditDb(textEdit.text);
-    }
-
-    content: Rectangle{
+    }*/
+    Container {
         id: background
-        color: backgroundColor
-        anchors.fill: parent
-        Flickable {
-            id: flick
-            anchors.fill: parent
-            anchors.topMargin: 10
-            anchors.bottomMargin: 10
-            leftMargin: 10
-            rightMargin: 10
-            contentHeight: textEdit.implicitHeight
-            contentWidth: textEdit.implicitWidth
-            //clip: true
-
-            TextArea {
-                id: textEdit
-                width: Math.max (flick.width, implicitWidth);
-                height: Math.max (flick.height, implicitHeight)
-                placeholderText: qsTr("Enter text to create your note.\n\nTip: You can copy text from other apps\nand paste it here as well.")
-                //inputMethodHints: Qt.ImhNoPredictiveText
-                onCursorPositionChanged: {
-                    textEdit.positionToRectangle(cursorPosition);
-                }
+        background: backgroundColor
+        leftPadding: 40.0
+        rightPadding: 40.0
+        topPadding: 40.0
+        TextArea {
+            id: textEdit
+            hintText: qsTr("Enter text to create your note.\n\nTip: You can copy text from other apps\nand paste it here as well.")
+            onTextChanged: {
+                textEdit.positionToRectangle(cursorPosition);
             }
+            minHeight: 300.0
+            backgroundVisible: true
         }
     }
-
-    function reloadDb()
-    {
+    function reloadDb() {
         listName = EditDb.getListName();
         textEdit.text = EditDb.loadEditDb(listName);
     }
-
-    onVisibleChanged: {
-        if(visible)
-        {
-            reloadDb();
-        }
-    }
-
-    function loadTheme()
-    {
+    function loadTheme() {
         EditDb.loadTheme();
         backgroundColor = EditDb.getValue("BACKGROUND_COLOR");
     }
-
-    function saveText(listName, text)
-    {
+    function saveText(listName, text) {
         EditDb.listName = listName
         EditDb.populateEditDb(text);
     }
-
-    function saveList(listName, text, timestamp)
-    {
+    function saveList(listName, text, timestamp) {
         EditDb.setListDb(listName, text, timestamp);
     }
 }
