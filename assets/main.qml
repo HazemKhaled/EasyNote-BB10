@@ -1,4 +1,5 @@
 import bb.cascades 1.0
+import bb.system 1.0
 import "mainPageDb.js" as DbConnection
 
 NavigationPane {
@@ -23,8 +24,37 @@ NavigationPane {
                 ActionItem {
                     title: qsTr("Synchronise")
                     onTriggered: {
-                        syncDialogLoader.sourceComponent = syncDialogComponent
-                        syncDialogLoader.item.open();
+                        syncDialog.show();
+                    }
+                    attachedObjects: [
+                        SystemDialog {
+	                        id: syncDialog
+	                        title: qsTr("Sync with online note?")
+	                        body: qsTr("Do you really want sync your current note with the online note?\n\nYour current note will be overwritten.")
+			                onFinished:{
+		                         if (syncDialog.result == ConfirmButtonSelection){
+		                             mainPage.sync()
+		                         }
+		                     }
+		                 },
+		                 SystemDialog {
+		                     id: unableToSyncDialog
+		                     title: qsTr("Can't synchronize")
+		                     body: qsTr("Unable to synchronize with online note. Please make sure you've correctly setup your sync account in settings.")  
+		                 }
+		             ]  
+	                
+                },
+                ActionItem {
+                    title: qsTr('Help')
+                    onTriggered: {
+                        var page = helpPageLoader.createObject();
+                        pageStack.push(page);
+                    }
+                     
+                    attachedObjects: ComponentDefinition {
+                        id: helpPageLoader;
+                        source: "HelpPage.qml"
                     }
                 },
                 ActionItem {
@@ -74,14 +104,7 @@ NavigationPane {
                     mainPage.orientationLock = orientationLock;
                 }
             }        
-        ]
-        
-        onStatusChanged: {
-            if (status == PageStatus.Deactivating) {
-                //console.log("+++ MainPage::onStatusChanged .Deactivating");
-                pageStackWindow.showToolBar = true;
-            }
-        }*/
+        ]*/
         
         actions: [
             ActionItem {
@@ -111,44 +134,7 @@ NavigationPane {
                 }
             }
         ]
-/*
-        Loader {
-            id: syncDialogLoader
-            onLoaded: {
-                console.log("Sync dialog loaded");
-            }
-            anchors.fill: parent
-        }
-        Component {
-            id: syncDialogComponent
-            QueryDialog {
-                id: syncDialog
-                titleText: qsTr("Sync with online note?")
-                message: qsTr("Do you really want sync your current note with the online note?\n\nYour current note will be overwritten.")
-                acceptButtonText: qsTr("Ok")
-                rejectButtonText: qsTr("Cancel")
-                onAccepted: {
-                    mainPage.sync();
-                }
-            }
-        }
-        Loader {
-            id: unableToSyncDialogLoader
-            onLoaded: {
-                console.log("Unacle to sync dialog loaded");
-            }
-            anchors.fill: parent
-        }
-        Component {
-            id: unableToSyncDialogComponent
-            QueryDialog {
-                id: unableToSyncDialog
-                titleText: qsTr("Can't synchronize")
-                message: qsTr("Unable to synchronize with online note. Please make sure you've correctly setup your sync account in settings.")
-                acceptButtonText: qsTr("Ok")
-            }
-        }*/
-        
+
         titleBar: TitleBar {
             id: titleBar
             title: "EasyNote - [" + mainPage.listName + "]"
