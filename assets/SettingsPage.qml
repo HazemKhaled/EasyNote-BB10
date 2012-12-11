@@ -11,29 +11,13 @@ Page {
     property color divisionLineColor: SettingsDb.getValue("DIVISION_LINE_COLOR")
     property color divisionLineTextColor: SettingsDb.getValue("DIVISION_LINE_TEXT_COLOR")
     property color textColor: SettingsDb.getValue("TEXT_COLOR")
-    orientationLock: SettingsDb.getOrientationLock();
-
-    tools: ToolBarLayout {
-        id: myToolbar
-        ToolIcon {
-            iconId: "toolbar-back";
-            onClicked: {
-                settingsPage.save();
-            }
-        }
-        ToolIcon {
-            iconId: "invitation-pending";
-            onClicked: {
-                helpDialog.open();
-            }
-        }
-    }
+    //orientationLock: SettingsDb.getOrientationLock();
 
     titleBar: TitleBar {
         id: titleBar
         title: qsTr("EasyNote - Settings")
     }
-    Rectangle {
+    /*Rectangle {
         id: background
         color: backgroundColor
         anchors.fill: parent
@@ -340,13 +324,6 @@ Page {
         }
     }
 
-    QueryDialog {
-        id: helpDialog
-        titleText: qsTr("Synchronization")
-        message: qsTr("When you've setup your synchronization account then you'll be able to synchronize your note with your online note.\n\nYou can create your online account on http://easylist.willemliu.nl.\nDefault sync URL is: http://easylist.willemliu.nl/getList.php")
-        acceptButtonText: qsTr("Ok")
-    }
-
     function reloadDb()
     {
         SettingsDb.loadSettingsDb();
@@ -379,5 +356,5 @@ Page {
         {
             reloadDb();
         }
-    }
+    }*/
 }
