@@ -23,6 +23,7 @@ NavigationPane {
 	            },
                 ActionItem {
                     title: qsTr("Synchronise")
+                    imageSource: 'asset:///images/9_av_repeat.png'
                     onTriggered: {
                         syncDialog.show();
                     }
@@ -42,11 +43,12 @@ NavigationPane {
 		                     title: qsTr("Can't synchronize")
 		                     body: qsTr("Unable to synchronize with online note. Please make sure you've correctly setup your sync account in settings.")  
 		                 }
-		             ]  
+		             ]
 	                
                 },
                 ActionItem {
                     title: qsTr('Help')
+                    imageSource: 'asset:///images/2_action_help.png'
                     onTriggered: {
                         var page = helpPageLoader.createObject();
                         pageStack.push(page);
@@ -59,6 +61,7 @@ NavigationPane {
                 },
                 ActionItem {
                     title: qsTr("About")
+                    imageSource: 'asset:///images/2_action_about.png'
                     onTriggered: {
                         var page = aboutPageLoader.createObject();
                         pageStack.push(page);
@@ -88,28 +91,27 @@ NavigationPane {
         property int modelIndex: -1
         property int scrollTo: 0
                          
-        attachedObjects: [ComponentDefinition {
-            id: listsPageLoader;
-            source: "ListsPage.qml"
-        },
-        Sheet {
-                id: editPageSheet
-                EditPage {
-                    id: editPage
-                    onCancel: {
-                        // Cancel modification so just hide the Sheet.
-                        editPageSheet.close();
-                    }
-                    onSave: {
-                        mainPage.reloadDb();
-                        editPageSheet.close();
-                    }
-                }
-        }]
+        attachedObjects: [
+	        Sheet {
+	                id: editPageSheet
+	                EditPage {
+	                    id: editPage
+	                    onCancel: {
+	                        // Cancel modification so just hide the Sheet.
+	                        editPageSheet.close();
+	                    }
+	                    onSave: {
+	                        mainPage.reloadDb();
+	                        editPageSheet.close();
+	                    }
+	                }
+	        }
+	    ]
         
         actions: [
             ActionItem {
                 title: qsTr("Add")
+                imageSource: 'asset:///images/5_content_new.png'
                 ActionBar.placement: ActionBarPlacement.OnBar
                 onTriggered: {
                     editPageSheet.open();
@@ -121,7 +123,8 @@ NavigationPane {
                 }
             },
             ActionItem {
-                title: qsTr("All Notes")
+                title: qsTr("Folders")
+                imageSource: 'asset:///images/4_collections_collection.png'
                 ActionBar.placement: ActionBarPlacement.OnBar
                 onTriggered: {
                     var page = listPageLoader.createObject();
@@ -130,14 +133,14 @@ NavigationPane {
                  
                 attachedObjects: ComponentDefinition {
                     id: listPageLoader;
-                    source: "ِListsPage.qml"
+                    source: "ListsPage.qml"
                 }
             }
         ]
 
         titleBar: TitleBar {
             id: titleBar
-            title: "EasyNote - [" + mainPage.listName + "]"
+            title: "[" + mainPage.listName + "]"
         }
         Container {
             id: background

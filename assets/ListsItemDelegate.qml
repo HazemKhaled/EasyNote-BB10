@@ -7,7 +7,7 @@ Item {
     property string listName: "No text"
     property color backgroundColor: Consts.getValue("LIST_ITEM_BACKGROUND_COLOR")
 
-    Rectangle {
+    /*Rectangle {
         id: backgroundRect
         color: backgroundColor
         anchors.fill: parent
@@ -38,5 +38,5 @@ Item {
     {
         Consts.loadTheme();
         backgroundColor = Consts.getValue("BACKGROUND_COLOR");
-    }
+    }*/
 }

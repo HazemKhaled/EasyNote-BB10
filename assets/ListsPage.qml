@@ -1,5 +1,6 @@
-import com.nokia.meego 1.0
-import QtQuick 1.0
+import bb.cascades 1.0
+import bb.system 1.0
+
 import "listsDb.js" as ListsDb
 
 Page {
@@ -13,19 +14,53 @@ Page {
     property color listItemBackgroundColor: ListsDb.getValue("LIST_ITEM_BACKGROUND_COLOR")
     property color hoverColor: ListsDb.getValue("HOVER_COLOR");
     property color highlightColor: ListsDb.getValue("HIGHLIGHT_COLOR")
-    orientationLock: ListsDb.getOrientationLock();
+    //orientationLock: ListsDb.getOrientationLock();
     property string listName: ListsDb.getListName()
+
+    actions: [
+        ActionItem {
+            title: qsTr("Add")
+            imageSource: 'asset:///images/5_content_new.png'
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                addPrompt.show();
+            }
+            attachedObjects: [
+                SystemPrompt {
+                    id: addPrompt
+                    title: qsTr("Add new Folder")
+                    body: qsTr("New note name:")
+	                onFinished:{
+                         if (addPrompt.result == ConfirmButtonSelection){
+	                         ListsDb.addList(addPrompt.inputFieldTextEntry);
+                             ListsDb.setListName(addPrompt.inputFieldTextEntry);
+                             listsPage.reloadDb();
+                         }
+                     }
+                 }
+             ]
+            
+        },
+        ActionItem {
+            title: qsTr("Delete")
+            imageSource: 'asset:///images/5_content_discard.png'
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                //removeDialog.open();
+            }
+        }
+    ]
 
     titleBar: TitleBar {
         id: titleBar
-        title: qsTr("EasyNote - Notes")
+        title: qsTr("Notes Folders")
     }
-    Rectangle {
+    
+    Container {
         id: background
-        color: backgroundColor
-        anchors.fill: parent
+        background: backgroundColor
 
-        ListModel {
+        /*ListModel {
             id: listModel
         }
         ListView {
@@ -40,260 +75,123 @@ Page {
             delegate: itemComponent
             highlight: highlight
         }
-        ScrollDecorator {
-            flickableItem: listView
-        }
 
-        Component {
-            id: itemComponent
-            ListsItemDelegate {
-                id: listsItem
-                listName: model.listName
-                height: 60
-                width: listView.width
-                backgroundColor: listItemBackgroundColor
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        listsPage.listName = listsItem.listName;
-                        listView.currentIndex = model.index;
-                        ListsDb.setListName(listsPage.listName);
-                        listsItem.backgroundColor = listItemBackgroundColor;
-                        pageStack.pop();
-                    }
-                    onPressAndHold: {
-                        listsPage.listName = listsItem.listName;
-                        contextMenu.open();
-                        listsItem.backgroundColor = listItemBackgroundColor;
-                    }
-                    onHoveredChanged: {
-                        if(containsMouse)
-                        {
-                            listsItem.backgroundColor = hoverColor;
+        attachedObjects: [
+            ComponentDefinition {
+	            id: itemComponent
+	            ListsItemDelegate {
+	                id: listsItem
+	                listName: model.listName
+	                height: 60
+	                width: listView.width
+	                backgroundColor: listItemBackgroundColor
+	                MouseArea {
+	                    anchors.fill: parent
+	                    onClicked: {
+	                        listsPage.listName = listsItem.listName;
+	                        listView.currentIndex = model.index;
+	                        ListsDb.setListName(listsPage.listName);
+	                        listsItem.backgroundColor = listItemBackgroundColor;
+	                        pageStack.pop();
+	                    }
+	                    onPressAndHold: {
+	                        listsPage.listName = listsItem.listName;
+	                        contextMenu.open();
+	                        listsItem.backgroundColor = listItemBackgroundColor;
+	                    }
+	                    onHoveredChanged: {
+	                        if(containsMouse)
+	                        {
+	                            listsItem.backgroundColor = hoverColor;
+	                        }
+	                        else
+	                        {
+	                            listsItem.backgroundColor = listItemBackgroundColor;
+	                        }
+	                    }
+	                    onReleased: {
+	                        listsItem.backgroundColor = listItemBackgroundColor;
+	                    }
+	                }
+	            }
+	        },
+	        ComponentDefinition {
+	            id: highlight
+	            Rectangle {
+	                width: listView.width;
+	                height: 60
+	                color: highlightColor;
+	                Behavior on y {
+	                    SpringAnimation {
+	                        spring: 3
+	                        damping: 0.2
+	                    }
+	                }
+	                radius: 5
+	                Rectangle {
+	                    id: divisionLine
+	                    color: divisionLineColor
+	                    height: 1
+	                    anchors.bottom: parent.bottom
+	                    anchors.left: parent.left
+	                    anchors.right: parent.right
+	                }
+	            }
+	        }
+        ]*/
+
+        contextActions: [
+            ActionSet {
+                title: qsTr("Actions")
+                subtitle: "This is an action set."
+                 
+                actions: [
+                    ActionItem {
+                        title: qsTr("Rename")
+                        imageSource: 'asset:///images/5_content_edit.png'
+                        onTriggered: {
+                            renamePrompt.inputField.defaultText = listsPage.listName;
+                            renamePrompt.show();
                         }
-                        else
-                        {
-                            listsItem.backgroundColor = listItemBackgroundColor;
-                        }
+                        attachedObjects: [
+                            SystemPrompt {
+                                id: renamePrompt
+                                title: qsTr("Rename notes folder")
+                                body: qsTr("New note name:")
+            	                onFinished:{
+                                     if (renamePrompt.result == ConfirmButtonSelection){
+                                         ListsDb.renameList(listsPage.listName, renamePrompt.inputFieldTextEntry);
+                                         ListsDb.setListName(renamePrompt.inputFieldTextEntry);
+                                         listsPage.reloadDb();
+                                     }
+                                 }
+                             }
+                         ]
+                    },
+                    ActionItem {
+	                    title: qsTr("Remove");
+	                    imageSource: 'asset:///images/5_content_discard.png'
+	                    onTriggered: {
+	                        removeDialog.show();
+	                    }
+	                    attachedObjects: [
+	                        SystemPrompt {
+	                            id: removeDialog
+                                title: qsTr("Remove note?")
+                                body: qsTr("Do you really want to remove [") + listsPage.listName + qsTr("]?")
+	        	                onFinished:{
+	                                 if (removeDialog.result == ConfirmButtonSelection){
+                                         ListsDb.removeList(listsPage.listName);
+                                         ListsDb.setListName(ListsDb.getFirstListName());
+                                         reloadDb();
+	                                 }
+	                             }
+	                         }
+	                     ]
                     }
-                    onReleased: {
-                        listsItem.backgroundColor = listItemBackgroundColor;
-                    }
-                }
-            }
-        }
-
-        Component {
-            id: highlight
-            Rectangle {
-                width: listView.width;
-                height: 60
-                color: highlightColor;
-                Behavior on y {
-                    SpringAnimation {
-                        spring: 3
-                        damping: 0.2
-                    }
-                }
-                radius: 5
-                Rectangle {
-                    id: divisionLine
-                    color: divisionLineColor
-                    height: 1
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                }
-            }
-        }
-
-        ContextMenu {
-            id: contextMenu
-            MenuLayout {
-                MenuItem {
-                    text: qsTr("Rename");
-                    onClicked: {
-                        renameListSheet.oldListName = listsPage.listName;
-                        renameListSheet.open();
-                    }
-                }
-                MenuItem {
-                    id: deleteMenuItem
-                    text: qsTr("Remove");
-                    onClicked: {
-                        removeDialog.open();
-                    }
-                }
-            }
-        }
-
-        Menu {
-            id: myMenu
-            MenuLayout {
-                MenuItem {
-                    text: qsTr("Settings");
-                    onClicked: {
-                        settingsPageLoader.sourceComponent = settingsPageComponent;
-                        pageStack.push(settingsPageLoader.item);
-                    }
-                }
-                MenuItem {
-                    text: qsTr("About");
-                    onClicked: {
-                        onClicked: {
-                            aboutPageLoader.source = "AboutPage.qml";
-                            pageStack.push(aboutPageLoader.item);
-                        }
-                    }
-                }
-            }
-        }
-
-        Sheet {
-            id: addListSheet
-            visualParent: listsPage
-            anchors.fill: parent
-            z: 2
-            acceptButtonText: qsTr("Save")
-            rejectButtonText: qsTr("Cancel")
-            content: Rectangle {
-                id: newListBackground
-                anchors.fill: parent
-                color: backgroundColor
-                Flickable {
-                    id: flick
-                    anchors.fill: parent
-                    anchors.topMargin: 10
-                    anchors.bottomMargin: 10
-                    leftMargin: 10
-                    rightMargin: 10
-                    contentWidth: listNameRect.implicitWidth
-                    contentHeight: listNameRect.implicitHeight
-
-                    Rectangle {
-                        id: listNameRect
-                        width: Math.max (flick.width, implicitWidth);
-                        height: Math.max (flick.height, implicitHeight);
-                        color: backgroundColor
-                        Label {
-                            id: newListLabel
-                            text: qsTr("New note name:")
-                            anchors.topMargin: 5
-                            anchors.top: parent.top
-                            anchors.left: parent.left
-                            leftMargin: 10
-                            textStyle {
-                                color: textColor
-                                fontSize : FontSize.Large
-                            }
-                        }
-                        TextField {
-                            id: textField
-                            anchors.topMargin: 5
-                            anchors.top: newListLabel.bottom
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            rightMargin: 10
-                            maximumLength: 20
-                            inputMethodHints: Qt.ImhNoPredictiveText
-                        }
-                    }
-                }
-            }
-            onAccepted: {
-                ListsDb.addList(textField.text);
-                ListsDb.setListName(textField.text);
-                listsPage.reloadDb();
-            }
-            onRejected: {
-            }
-            onVisibleChanged: {
-                if(visible)
-                {
-                    textField.selectAll();
-                    textField.platformOpenSoftwareInputPanel();
-                    pageStackWindow.showToolBar = false;
-                }
-                else
-                {
-                    pageStackWindow.showToolBar = true;
-                }
-            }
-        }
-
-        Sheet {
-            id: renameListSheet
-            property string oldListName:  ""
-            visualParent: listsPage
-            anchors.fill: parent
-            z: 2
-            acceptButtonText: qsTr("Rename")
-            rejectButtonText: qsTr("Cancel")
-            content: Rectangle {
-                id: renameListBackground
-                anchors.fill: parent
-                color: backgroundColor
-                Flickable {
-                    id: renameFlick
-                    anchors.fill: parent
-                    anchors.topMargin: 10
-                    anchors.bottomMargin: 10
-                    leftMargin: 10
-                    rightMargin: 10
-                    contentWidth: renameListNameRect.implicitWidth
-                    contentHeight: renameListNameRect.implicitHeight
-
-                    Rectangle {
-                        id: renameListNameRect
-                        width: Math.max (renameFlick.width, implicitWidth);
-                        height: Math.max (renameFlick.height, implicitHeight)
-                        color: backgroundColor
-                        Label {
-                            id: renameNewListLabel
-                            text: qsTr("New note name:")
-                            anchors.topMargin: 5
-                            anchors.top: parent.top
-                            anchors.left: parent.left
-                            leftMargin: 10
-                            textStyle {
-                                color: textColor
-                                fontSize : FontSize.Large
-                            }
-                        }
-                        TextField {
-                            id: renameTextField
-                            text: renameListSheet.oldListName
-                            anchors.topMargin: 5
-                            anchors.top: renameNewListLabel.bottom
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            rightMargin: 10
-                            maximumLength: 20
-                            inputMethodHints: Qt.ImhNoPredictiveText
-                        }
-                    }
-                }
-            }
-            onAccepted: {
-                ListsDb.renameList(renameListSheet.oldListName, renameTextField.text);
-                ListsDb.setListName(renameTextField.text);
-                listsPage.reloadDb();
-            }
-            onRejected: {
-            }
-            onVisibleChanged: {
-                if(visible)
-                {
-                    renameTextField.selectAll();
-                    renameTextField.platformOpenSoftwareInputPanel();
-                    pageStackWindow.showToolBar = false;
-                }
-                else
-                {
-                    pageStackWindow.showToolBar = true;
-                }
-            }
-        }
+                ]
+            }   
+        ]
     }
 
     function reloadDb()
@@ -328,61 +226,6 @@ Page {
         }
 
         deleteToolIcon.enabled = visible;
-    }
-
-    tools: ToolBarLayout {
-        id: myToolbar
-        ToolIcon {
-            iconId: "toolbar-back";
-            onClicked: {
-                pageStack.pop();
-            }
-        }
-        ToolIcon {
-            iconId: "toolbar-add";
-            onClicked: {
-                addListSheet.open();
-            }
-        }
-        ToolIcon {
-            id: deleteToolIcon
-            iconId: "toolbar-delete";
-            onClicked: {
-                removeDialog.open();
-            }
-        }
-        ToolIcon {
-            iconId: "toolbar-view-menu";
-            onClicked: {
-                if(myMenu.status == DialogStatus.Closed)
-                {
-                    myMenu.open();
-                }
-                else {
-                    myMenu.close();
-                }
-            }
-        }
-    }
-
-    QueryDialog {
-        id: removeDialog
-        titleText: qsTr("Remove note?")
-        message: qsTr("Do you really want to remove [") + listsPage.listName + qsTr("]?")
-        acceptButtonText: qsTr("Ok")
-        rejectButtonText: qsTr("Cancel")
-        onAccepted: {
-            ListsDb.removeList(listsPage.listName);
-            ListsDb.setListName(ListsDb.getFirstListName());
-            reloadDb();
-        }
-    }
-
-    onVisibleChanged: {
-        if(visible)
-        {
-            reloadDb();
-        }
     }
 
     function loadTheme()
