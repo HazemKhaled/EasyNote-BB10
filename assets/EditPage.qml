@@ -47,9 +47,9 @@ Page {
     Container {
         id: background
         background: backgroundColor
-        leftPadding: 40.0
-        rightPadding: 40.0
-        topPadding: 40.0
+        leftPadding: 20.0
+        rightPadding: 20.0
+        topPadding: 20.0
         TextArea {
             id: textEdit
             hintText: qsTr("Enter text to create your note.\n\nTip: You can copy text from other apps\nand paste it here as well.")

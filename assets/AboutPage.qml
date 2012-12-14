@@ -11,7 +11,7 @@ Page {
     property string version: "0.0.4"
     titleBar: TitleBar {
         id: titleBar
-        title: qsTr("EasyNote - About")
+        title: qsTr("About")
     }
     Container {
         id: background
