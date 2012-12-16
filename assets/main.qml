@@ -5,75 +5,78 @@ import "mainPageDb.js" as DbConnection
 NavigationPane {
     id: pageStack
     // Add the application menu using a MenuDefinition
-        Menu.definition: MenuDefinition {
+    Menu.definition: MenuDefinition {
 
-            // Specify the actions that should be included in the menu
-            actions: [
-	            ActionItem {
-	                title: qsTr("Settings")
-	                onTriggered: {
-	                    var page = settingsPageLoader.createObject();
-	                    pageStack.push(page);
-	                }
-	                 
-	                attachedObjects: ComponentDefinition {
-	                    id: settingsPageLoader;
-	                    source: "SettingsPage.qml"
-	                }
-	            },
-                ActionItem {
-                    title: qsTr("Synchronise")
-                    imageSource: 'asset:///images/9_av_repeat.png'
-                    onTriggered: {
-                        syncDialog.show();
-                    }
-                    attachedObjects: [
-                        SystemDialog {
-	                        id: syncDialog
-	                        title: qsTr("Sync with online note?")
-	                        body: qsTr("Do you really want sync your current note with the online note?\n\nYour current note will be overwritten.")
-			                onFinished:{
-		                         if (syncDialog.result == ConfirmButtonSelection){
-		                             mainPage.sync()
-		                         }
-		                     }
-		                 },
-		                 SystemDialog {
-		                     id: unableToSyncDialog
-		                     title: qsTr("Can't synchronize")
-		                     body: qsTr("Unable to synchronize with online note. Please make sure you've correctly setup your sync account in settings.")  
-		                 }
-		             ]
-	                
-                },
-                ActionItem {
-                    title: qsTr('Help')
-                    imageSource: 'asset:///images/2_action_help.png'
-                    onTriggered: {
-                        var page = helpPageLoader.createObject();
-                        pageStack.push(page);
-                    }
-                     
-                    attachedObjects: ComponentDefinition {
-                        id: helpPageLoader;
-                        source: "HelpPage.qml"
-                    }
-                },
-                ActionItem {
-                    title: qsTr("About")
-                    imageSource: 'asset:///images/2_action_about.png'
-                    onTriggered: {
-                        var page = aboutPageLoader.createObject();
-                        pageStack.push(page);
-                    }
-                     
-                    attachedObjects: ComponentDefinition {
-                        id: aboutPageLoader;
-                        source: "AboutPage.qml"
-                    }
+        // Specify the actions that should be included in the menu
+        actions: [
+            ActionItem {
+                title: qsTr("Settings")
+                onTriggered: {
+                    var page = settingsPageLoader.createObject();
+                    pageStack.push(page);
                 }
-            ] // end of actions list
-        } // end of MenuDefinition
+                attachedObjects: ComponentDefinition {
+                    id: settingsPageLoader
+                    source: "SettingsPage.qml"
+                }
+            },
+            ActionItem {
+                title: qsTr("Synchronise")
+                imageSource: 'asset:///images/9_av_repeat.png'
+                onTriggered: {
+                    soonDialog.show();
+                    //syncDialog.show();
+                }
+                attachedObjects: [
+                    SystemDialog {
+                        id: syncDialog
+                        title: qsTr("Sync with online note?")
+                        body: qsTr("Do you really want sync your current note with the online note?\n\nYour current note will be overwritten.")
+                        onFinished: {
+                            if (syncDialog.result == ConfirmButtonSelection) {
+                                mainPage.sync()
+                            }
+                        }
+                    },
+                    SystemDialog {
+                        id: unableToSyncDialog
+                        title: qsTr("Can't synchronize")
+                        body: qsTr("Unable to synchronize with online note. Please make sure you've correctly setup your sync account in settings.")
+                    }
+                ]
+            },
+            ActionItem {
+                title: qsTr('Help')
+                imageSource: 'asset:///images/2_action_help.png'
+                onTriggered: {
+                    var page = helpPageLoader.createObject();
+                    pageStack.push(page);
+                }
+                attachedObjects: ComponentDefinition {
+                    id: helpPageLoader
+                    source: "HelpPage.qml"
+                }
+            },
+            ActionItem {
+                title: qsTr("About")
+                imageSource: 'asset:///images/2_action_about.png'
+                onTriggered: {
+                    var page = aboutPageLoader.createObject();
+                    pageStack.push(page);
+                }
+                attachedObjects: ComponentDefinition {
+                    id: aboutPageLoader
+                    source: "AboutPage.qml"
+                }
+            }
+        ]
+    }
+    attachedObjects: [
+        SystemToast {
+            id: soonDialog
+            body: qsTr("Sooooon.")
+        }
+    ]
     Page {
         id: mainPage
         //orientationLock: DbConnection.getOrientationLock()
@@ -90,24 +93,22 @@ NavigationPane {
         property int index: -1
         property int modelIndex: -1
         property int scrollTo: 0
-                         
         attachedObjects: [
-	        Sheet {
-	                id: editPageSheet
-	                EditPage {
-	                    id: editPage
-	                    onCancel: {
-	                        // Cancel modification so just hide the Sheet.
-	                        editPageSheet.close();
-	                    }
-	                    onSave: {
-	                        mainPage.reloadDb();
-	                        editPageSheet.close();
-	                    }
-	                }
-	        }
-	    ]
-        
+            Sheet {
+                id: editPageSheet
+                EditPage {
+                    id: editPage
+                    onCancel: {
+                        // Cancel modification so just hide the Sheet.
+                        editPageSheet.close();
+                    }
+                    onSave: {
+                        mainPage.reloadDb();
+                        editPageSheet.close();
+                    }
+                }
+            }
+        ]
         actions: [
             ActionItem {
                 title: qsTr("Add")
@@ -116,7 +117,6 @@ NavigationPane {
                 onTriggered: {
                     editPageSheet.open();
                 }
-                 
                 attachedObjects: ComponentDefinition {
                     id: editPageLoader
                     source: "ِEditPage.qml"
@@ -130,14 +130,12 @@ NavigationPane {
                     var page = listPageLoader.createObject();
                     pageStack.push(page);
                 }
-                 
                 attachedObjects: ComponentDefinition {
-                    id: listPageLoader;
+                    id: listPageLoader
                     source: "ListsPage.qml"
                 }
             }
         ]
-
         titleBar: TitleBar {
             id: titleBar
             title: "[" + mainPage.listName + "]"
@@ -147,99 +145,85 @@ NavigationPane {
             background: backgroundColor
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
-            /*ListModel {
-                id: listModel
-            }
             ListView {
                 id: listView
-	            verticalAlignment: VerticalAlignment.Center
-	            horizontalAlignment: HorizontalAlignment.Center
-                //model: DbConnection.loadDB(listName)
+                horizontalAlignment: HorizontalAlignment.Fill
+                dataModel: ArrayDataModel {
+                    id: listModel
+                }
+                onCreationCompleted: {
+                    listModel.append([
+                            {
+                                itemIndex: 1,
+                                itemText: 'teeest teesttttt',
+                                itemSelected: true
+                            },
+                            {
+                                itemIndex: 2,
+                                itemText: 'teeest asdsada',
+                                itemSelected: false
+                            }
+                        ]);
+                    DbConnection.loadDB(mainPage.listName);
+                }
+
                 //delegate: itemComponent
-            }
-            ScrollDecorator {
-                flickableItem: listView
-            }
-            Component {
-                id: itemComponent
-                ListItemDelegate {
-                    id: listItem
-                    itemIndex: model.itemIndex
-                    itemText: model.itemText
-                    itemSelected: model.itemSelected
-                    preferredHeight: Math.max(60, text.implicitHeight + 10)
-                    preferredWidth: listView.width
-                    Rectangle {
-                        id: backgroundRect
-                        color: backgroundColor
-                        anchors.fill: parent
-                        Rectangle {
-                            id: divisionLine
-                            color: DbConnection.getValue("DIVISION_LINE_COLOR")
-                            preferredHeight: 1
-                            anchors.bottom: parent.bottom
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                        }
-                        MouseArea {
-                            preferredHeight: parent.height
-                            preferredWidth: listView.width
-                            onPressAndHold: {
-                                scrollTo = listView.contentY;
-                                mainPage.index = listItem.itemIndex;
-                                contextMenu.open();
-                                listItem.backgroundColor = DbConnection.getValue("LIST_ITEM_BACKGROUND_COLOR");
-                            }
-                            onHoveredChanged: {
-                                if (containsMouse) {
-                                    listItem.backgroundColor = DbConnection.getValue("HOVER_COLOR");
-                                } else {
-                                    listItem.backgroundColor = DbConnection.getValue("LIST_ITEM_BACKGROUND_COLOR");
+                listItemComponents: [
+                    ListItemComponent {
+                        id: listItem
+                        //type: "item"
+                        Container {
+                            id: backgroundRect
+                            background: backgroundColor
+                            leftPadding: 10
+                            rightPadding: 10
+                            contextActions: [
+                                ActionSet {
+                                    title: qsTr("Remove")
+                                    subtitle: qsTr("Remove this item ?")
+                                    actions: [
+                                        ActionItem {
+                                            title: qsTr("Delete")
+                                            imageSource: 'asset:///images/5_content_discard.png'
+                                            onTriggered: {
+                                                DbConnection.removeRecord(mainPage.index);
+                                                mainPage.reloadDb();
+                                            }
+                                        },
+                                        ActionItem {
+                                            title: qsTr("Edit")
+                                            imageSource: 'asset:///images/5_content_edit.png'
+                                            onTriggered: {
+                                                soonDialog.show();
+                                            }
+                                        }
+                                    ]
                                 }
-                            }
-                            onReleased: {
-                                listItem.backgroundColor = DbConnection.getValue("LIST_ITEM_BACKGROUND_COLOR");
+                            ]
+                            Divider {
                             }
                             Label {
                                 id: text
-                                anchors.verticalCenter: parent.verticalCenter
                                 preferredWidth: listView.width
-                                leftMargin: 10
-								textStyle {
-								        color: DbConnection.getValue("LIST_ITEM_TEXT_COLOR")
-								        fontSize : FontSize.Large
-								}
-                                text: itemText
-                                wrapMode: Text.Wrap
-                                onLinkActivated: {
-                                    Qt.openUrlExternally(link);
+                                textStyle {
+                                    color: DbConnection.getValue("LIST_ITEM_TEXT_COLOR")
+                                    fontSize: FontSize.Large
                                 }
+                                text: ListItemData.itemText
+                                multiline: true
+
+                                //onLinkActivated: {
+                                //    Qt.openUrlExternally(link);
+                                //}
                             }
                         }
                     }
-                }
-            }*/
+                ]
+            }
         }
-        /*contextActions: [
-            ActionSet {
-	            title: qsTr("Remove")
-	            subtitle: qsTr("Remove this item ?")
-	              
-	            actions: [
-	                ActionItem {
-	                    title: qsTr("Delete")
-	                    onTriggered: {
-	                        DbConnection.removeRecord(mainPage.index);
-	                        mainPage.reloadDb();
-	                        listView.contentY = scrollTo;
-	                    }   
-	                }
-	            ]
-	        }
-        ]*/
         function reloadDb() {
-            listName = DbConnection.getListName();
-            DbConnection.loadDB(listName);
+            mainPage.listName = DbConnection.getListName();
+            DbConnection.loadDB(mainPage.listName);
         }
         function loadTheme() {
             DbConnection.loadTheme();
