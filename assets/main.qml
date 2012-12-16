@@ -42,6 +42,10 @@ NavigationPane {
                         id: unableToSyncDialog
                         title: qsTr("Can't synchronize")
                         body: qsTr("Unable to synchronize with online note. Please make sure you've correctly setup your sync account in settings.")
+                    },
+                    SystemToast {
+                        id: soonDialog
+                        body: qsTr("Sooooon.")
                     }
                 ]
             },
@@ -71,12 +75,6 @@ NavigationPane {
             }
         ]
     }
-    attachedObjects: [
-        SystemToast {
-            id: soonDialog
-            body: qsTr("Sooooon.")
-        }
-    ]
     Page {
         id: mainPage
         //orientationLock: DbConnection.getOrientationLock()
@@ -179,14 +177,14 @@ NavigationPane {
                             rightPadding: 10
                             contextActions: [
                                 ActionSet {
-                                    title: qsTr("Remove")
-                                    subtitle: qsTr("Remove this item ?")
+                                    title: qsTr("Edit / Delete")
+                                    subtitle: ListItemData.itemText
                                     actions: [
                                         ActionItem {
                                             title: qsTr("Delete")
                                             imageSource: 'asset:///images/5_content_discard.png'
                                             onTriggered: {
-                                                DbConnection.removeRecord(mainPage.index);
+                                                DbConnection.removeRecord(ListItemData.itemIndex);
                                                 mainPage.reloadDb();
                                             }
                                         },
@@ -194,8 +192,14 @@ NavigationPane {
                                             title: qsTr("Edit")
                                             imageSource: 'asset:///images/5_content_edit.png'
                                             onTriggered: {
-                                                soonDialog.show();
+                                                editConfirmDialog.show();
                                             }
+                                            attachedObjects: [
+                                                SystemToast {
+                                                    id: editConfirmDialog
+                                                    body: qsTr("Sooooon.")
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
