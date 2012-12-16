@@ -40,7 +40,7 @@ function populateEditDb(text)
     var db = getDbConnection();
     db.transaction(function(tx) {
         // Clear all items.
-        tx.executeSql('DELETE FROM EasyListData WHERE listName=(?)', [listName]);
+        //tx.executeSql('DELETE FROM EasyListData WHERE listName=(?)', [listName]);
     });
     var lines = text.split(/[\n]+/);
     var lineNum = lines.length;
