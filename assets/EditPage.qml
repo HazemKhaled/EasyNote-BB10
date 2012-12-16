@@ -6,44 +6,26 @@ Page {
     property string listName: "default"
     property color backgroundColor: EditDb.getValue("BACKGROUND_COLOR")
     signal cancel()
-    signal save ()
-
+    signal save()
     titleBar: TitleBar {
         id: addBar
         title: qsTr("Add new Note")
         visibility: ChromeVisibility.Visible
-        
         dismissAction: ActionItem {
             title: qsTr("Cancel")
             onTriggered: {
                 editPage.cancel();
             }
         }
-                
         acceptAction: ActionItem {
             title: qsTr("Save")
             onTriggered: {
+                EditDb.populateEditDb(textEdit.text);
+                textEdit.text = '';
                 editPage.save()
             }
         }
     }
-    /*
-    acceptButtonText: qsTr("Save")
-    rejectButtonText: qsTr("Cancel")
-    buttons: [
-        SheetButton {
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("Paste")
-            onClicked: {
-                textEdit.paste();
-            }
-        }
-    ]
-    onAccepted: {
-        textEdit.platformCloseSoftwareInputPanel();
-        EditDb.populateEditDb(textEdit.text);
-    }*/
     Container {
         id: background
         background: backgroundColor
@@ -54,7 +36,7 @@ Page {
             id: textEdit
             hintText: qsTr("Enter text to create your note.\n\nTip: You can copy text from other apps\nand paste it here as well.")
             onTextChanged: {
-                textEdit.positionToRectangle(cursorPosition);
+                //textEdit.positionToRectangle(cursorPosition);
             }
             minHeight: 300.0
             backgroundVisible: true
