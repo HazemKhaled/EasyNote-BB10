@@ -23,34 +23,37 @@ Page {
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
             content: Container {
-                horizontalAlignment: HorizontalAlignment.Center
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+                topPadding: 50.0
+                leftPadding: 40.0
+                rightPadding: 40.0
                 Label {
-                    id: text1
-                    text: "http://willemliu.nl/donate/"
+                    text: "Ported to BlackBerry by\nHazem Khaled\ntwitter: @HazemKhaled"
+                    textStyle.textAlign: TextAlign.Center
+                    multiline: true
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    textStyle.fontSize: FontSize.Large
+                    textStyle.color: Color.create("#0080d5")
+                    textStyle.fontWeight: FontWeight.Bold
+                }
+                Divider {
                 }
                 Label {
-                    id: text2
-                    text: version
+                    text: "Created by: Willem Liu\n http://willemliu.nl/"
+                    textStyle.textAlign: TextAlign.Center
+                    multiline: true
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    textStyle.fontSize: FontSize.Large
+                    textStyle.color: Color.DarkGreen
+                    textStyle.fontWeight: FontWeight.Bold
+                }
+                Divider {
                 }
                 Label {
-                    id: text3
-                    text: qsTr("Created with Qt")
-                }
-                Label {
-                    id: text4
-                    text: qsTr("Created by <a href='http://willemliu.nl/donate/'>Willem Liu</a>")
-                }
-                Label {
-                    id: text5
-                    text: qsTr("Thanks to:")
-                }
-                Label {
-                    id: text6
-                    text: "Stanislav"
-                }
-                Label {
-                    id: text7
-                    text: "Jan-Eric Lindh"
+                    text: 'Version : ' + version
+                    textStyle.textAlign: TextAlign.Center
+                    horizontalAlignment: HorizontalAlignment.Fill
                 }
             }
         }
