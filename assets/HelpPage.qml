@@ -22,14 +22,24 @@ Page {
             id: flick
             content: Container {
                 horizontalAlignment: HorizontalAlignment.Fill
+                leftPadding: 40.0
+                rightPadding: 40.0
+                topPadding: 40.0
+                Label {
+                    text: "Synchronization:"
+                    textStyle.fontWeight: FontWeight.Bold
+                    textStyle.fontSize: FontSize.Large
+                }
                 Label {
                     text: "When you've setup your synchronization account then you'll be able to synchronize your note with your online note."
                     multiline: true
+                    textStyle.textAlign: TextAlign.Justify
+                    horizontalAlignment: HorizontalAlignment.Fill
                 }
-                
                 Label {
                     text: "You can create your online account on http://easylist.willemliu.nl.\nDefault sync URL is: http://easylist.willemliu.nl/getList.php"
                     multiline: true
+                    textStyle.textAlign: TextAlign.Justify
                 }
             }
         }
