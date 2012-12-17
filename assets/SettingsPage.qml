@@ -15,6 +15,12 @@ Page {
     titleBar: TitleBar {
         id: titleBar
         title: qsTr("Settings")
+        acceptAction: ActionItem {
+            title: qsTr("Save")
+            onTriggered: {
+                settingsPage.save();
+            }
+        }
     }
     Container {
         id: background
@@ -205,15 +211,6 @@ Page {
                 TextField {
                     id: syncPasswordTextField
                     inputMode: TextFieldInputMode.Password
-                }
-                Button {
-                    id: saveSettingsButton
-                    text: qsTr("Save")
-                    topMargin: 40
-                    horizontalAlignment: HorizontalAlignment.Right
-                    onClicked: {
-                        settingsPage.save();
-                    }
                 }
             }
         }
