@@ -29,7 +29,7 @@ Page {
                 leftPadding: 40.0
                 rightPadding: 40.0
                 Label {
-                    text: "Ported to BlackBerry by\nHazem Khaled\ntwitter: @HazemKhaled"
+                    text: qsTr("Ported to BlackBerry by\nHazem Khaled\ntwitter: @HazemKhaled")
                     textStyle.textAlign: TextAlign.Center
                     multiline: true
                     horizontalAlignment: HorizontalAlignment.Fill
@@ -40,7 +40,7 @@ Page {
                 Divider {
                 }
                 Label {
-                    text: "Created by: Willem Liu\n http://willemliu.nl/"
+                    text: qsTr("Created by: Willem Liu\n http://willemliu.nl/")
                     textStyle.textAlign: TextAlign.Center
                     multiline: true
                     horizontalAlignment: HorizontalAlignment.Fill
@@ -51,7 +51,7 @@ Page {
                 Divider {
                 }
                 Label {
-                    text: 'Version : ' + version
+                    text: qsTr('Version : ') + version
                     textStyle.textAlign: TextAlign.Center
                     horizontalAlignment: HorizontalAlignment.Fill
                 }
