@@ -110,7 +110,7 @@ NavigationPane {
         actions: [
             ActionItem {
                 title: qsTr("Add")
-                imageSource: 'asset:///images/5_content_new.png'
+                imageSource: 'asset:///images/add.png'
                 ActionBar.placement: ActionBarPlacement.OnBar
                 onTriggered: {
                     editPageSheet.open();
@@ -181,16 +181,8 @@ NavigationPane {
                                     subtitle: ListItemData.itemText
                                     actions: [
                                         ActionItem {
-                                            title: qsTr("Delete")
-                                            imageSource: 'asset:///images/5_content_discard.png'
-                                            onTriggered: {
-                                                DbConnection.removeRecord(ListItemData.itemIndex);
-                                                mainPage.reloadDb();
-                                            }
-                                        },
-                                        ActionItem {
                                             title: qsTr("Edit")
-                                            imageSource: 'asset:///images/5_content_edit.png'
+                                            imageSource: 'asset:///images/edit.png'
                                             onTriggered: {
                                                 editConfirmDialog.show();
                                             }
@@ -200,6 +192,13 @@ NavigationPane {
                                                     body: qsTr("Sooooon.")
                                                 }
                                             ]
+                                        },
+                                        DeleteActionItem {
+                                            title: qsTr("Delete")
+                                            onTriggered: {
+                                                DbConnection.removeRecord(ListItemData.itemIndex);
+                                                mainPage.reloadDb();
+                                            }
                                         }
                                     ]
                                 }

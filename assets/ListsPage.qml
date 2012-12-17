@@ -18,7 +18,7 @@ Page {
     actions: [
         ActionItem {
             title: qsTr("Add")
-            imageSource: 'asset:///images/5_content_new.png'
+            imageSource: 'asset:///images/add.png'
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
                 addPrompt.show();
@@ -83,7 +83,7 @@ Page {
                                 actions: [
                                     ActionItem {
                                         title: qsTr("Rename")
-                                        imageSource: 'asset:///images/5_content_edit.png'
+                                        imageSource: 'asset:///images/edit.png'
                                         onTriggered: {
                                             renamePrompt.inputField.defaultText = listsPage.listName;
                                             renamePrompt.show();
@@ -103,9 +103,8 @@ Page {
                                             }
                                         ]
                                     },
-                                    ActionItem {
+                                    DeleteActionItem {
                                         title: qsTr("Delete")
-                                        imageSource: 'asset:///images/5_content_discard.png'
                                         onTriggered: {
                                             removeDialog.show();
                                         }
